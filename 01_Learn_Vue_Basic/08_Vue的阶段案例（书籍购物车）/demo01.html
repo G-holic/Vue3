@@ -1,0 +1,119 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        table {
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #aaa;
+        }
+
+        td, th {
+            border: 1px solid;
+            padding: 8px 8px;
+        }
+        .active{
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <template v-if="books.length">
+            <table>
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>书籍名称</th>
+                        <th>出版日期</th>
+                        <th>价格</th>
+                        <th>购买数量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr :class="{active : index === currentIndex}" @click="rowClick(index)" v-for="(item, index) in books" :key="item.id">
+                        <td>{{ index+1 }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.date }}</td>
+                        <td>{{ forMate(item.price) }}</td>
+                        <td>
+                            <button :disabled="item.count <= 1" @click="decrement(index, item)">-</button>
+                            {{ item.count }}
+                            <button @click="increment(index, item)">+</button>
+                        </td>
+                        <td>
+                            <button @click="removeClick(index)">移除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>总价: {{ forMate(getSumPrice) }}</h2>
+        </template>
+        <template v-else>
+            <h2>购物车为空，请添加喜欢的书籍~</h2>
+            <p>书籍中大部分是it类书籍，请选择</p>
+        </template>
+    </div>
+    <script src="../lib/vue.js"></script>
+    <!-- 引入js -->
+    <script src="./data/data.js"></script>
+
+    <script>
+        // 1.创建app
+        const app = Vue.createApp({
+            // template:{},
+            data() {
+                return {
+                    books: books,
+                    currentIndex: -1
+                }
+            },
+
+            methods: {
+                forMate(price) {
+                    return "￥" + price
+                },
+                decrement(index, item) {
+                    console.log(item.count)
+                    item.count--
+                    // this.books[index].count--
+                },
+                increment(index, item) {
+                    console.log(item.count)
+                    item.count++
+                    // this.books[index].count++
+                },
+                removeClick(index) {
+                    this.books.splice(index, 1)
+                },
+                rowClick(index){
+                    this.currentIndex = index
+                }
+            },
+            computed: {
+                getSumPrice() {
+                    let price = 0
+                    for (const item of this.books) {
+                        price += item.price * item.count
+                    }
+                    return price
+                }
+            }
+        })
+
+
+        // 2.挂载app
+        app.mount("#app")
+    </script>
+</body>
+
+</html>

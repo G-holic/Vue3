@@ -1,0 +1,47 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <h2>当前记数：{{counter}}</h2>
+        <button @click="increment">+1</button>
+    </div>
+    <script src="./lib/vue.js"></script>
+
+    <script>
+        // console.log(this) // 这里的this 和箭头函数的this一样
+        const app = Vue.createApp({
+            // template:{},
+            data: function () {
+                return {
+                    counter: 0
+                }
+            },
+            // methods: option api
+            methods: {
+                increment: function () {
+                    // console.log("+1")
+                    console.log(this)
+                    this.counter++
+                },
+                // es6写法
+                increment(){
+                    
+                }
+                // increment:()=>{// 箭头函数不绑定this （强调所以不应该使用箭头函数来绑定）
+                //     console.log(this) // 这里的this相当于全局的this
+                // }
+            }
+        })
+        app.mount("#app")
+    </script>
+</body>
+
+</html>

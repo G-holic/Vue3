@@ -1,0 +1,84 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .product {
+            background-color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <home-nav></home-nav>
+        <!-- Failed to resolve component: product-item (局部组件使用不了，要想使用，需要在HomeNav内注册局部组件) -->
+        <product-item></product-item>
+    </div>
+
+    <template id="nav">
+        <div>----------------nav start----------------</div>
+        <h2>我是应用程序的导航</h2>
+        <product-item></product-item>
+        <div>----------------nav end----------------</div>
+    </template>
+
+    <template id="product">
+        <div class="product">
+            <h2>{{ title }}</h2>
+            <p>商品描述，限时折扣，赶紧抢购</p>
+            <p>价格: {{ price }}</p>
+            <button @click="favarItem">收藏</button>
+        </div>
+    </template>
+    <script src="../lib/vue.js"></script>
+
+    <script>
+        // 1.创建app
+        const ProductItem = {
+            template: "#product",
+            data() {
+                return {
+                    title: "我是标题",
+                    price: 9.99
+                }
+            },
+            methods: {
+                favarItem() {
+                    console.log("已经收藏")
+                }
+            }
+        }
+        // 1.1 组件打算在哪里被使用
+        const app = Vue.createApp({
+            // components: option api
+            components: {
+                ProductItem, // 这里命名注意是驼峰,
+                HomeNav: { // 这里命名注意是驼峰
+                    template: "#nav",
+                    components: {
+                        ProductItem
+                    }
+                }
+            },
+            data() {
+                return {
+                    message: "Hello"
+                }
+            }
+        })
+
+        // 2.produce-item
+        // app.component()
+
+
+
+        // 2.挂载app
+        app.mount("#app")
+    </script>
+</body>
+
+</html>
